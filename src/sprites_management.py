@@ -5,7 +5,7 @@ from os import listdir
 
 
 def get_background(name):  # Return the background
-    image = pygame.image.load(join("..\\assets", "terrain", name))  # Retrieve the image file
+    image = pygame.image.load(join(ASSETS, "terrain", name))  # Retrieve the image file
     _, _, width, height = image.get_rect()                          # Retrieve the image size
 
     # Temp : to reduce the background tiles size (but this is temp background)  #
@@ -26,9 +26,12 @@ def get_background(name):  # Return the background
     return tiles, image
 
 
-def draw(window, background, bg_image, player):  # Draw the visual aspect on the window
+def draw(window, background, bg_image, player, objects):  # Draw the visual aspect on the window
     for tile in background:
         window.blit(bg_image, tile)  # Draw each tile for the background
+
+    for obj in objects:
+        obj.draw(window)
 
     player.draw(window)
 
@@ -39,8 +42,7 @@ def flip(sprites):
     return [pygame.transform.flip(sprite, True, False) for sprite in sprites]
 
 
-def load_sprite_sheets(dir1, dir2, width, height, direction=False):
-    path = join("..\\assets", dir1, dir2)
+def load_sprite_sheets(path, width, height, direction=False):
     images = [f for f in listdir(path) if isfile(join(path, f))]
 
     all_sprites = {}
@@ -62,3 +64,12 @@ def load_sprite_sheets(dir1, dir2, width, height, direction=False):
             all_sprites[image.replace(".png", "")] = sprites
 
     return all_sprites
+
+
+def load_block(size):
+    path = join(ASSETS, "terrain", "crate.png")
+    image = pygame.image.load(path).convert_alpha()
+    surface = pygame.Surface((size, size), pygame.SRCALPHA, 32)
+    rect = pygame.Rect(0, 0, size, size)
+    surface.blit(image, (0, 0), rect)
+    return surface

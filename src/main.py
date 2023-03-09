@@ -4,6 +4,7 @@ import random
 import math
 import pygame
 from player import Player
+from block import Block
 from constants import *
 from keyboard_management import handle_move
 from sprites_management import get_background, draw, flip
@@ -23,7 +24,12 @@ def main(win):
     clock = pygame.time.Clock()                             # Init the clock
     background, bg_image = get_background("grey_tile.png")  # Init the background
 
+    block_size = 64
+
     player = Player(128, 128, 16, 32)
+
+    floor = [Block(i * block_size, HEIGHT - block_size, block_size)
+             for i in range(-WIDTH // block_size, (WIDTH * 2) // block_size)]
 
     run = True
     while run:
@@ -35,9 +41,9 @@ def main(win):
                 break
 
         player.loop(FPS)        # Move the player
-        handle_move(player)     # Get the inputs for the movement
+        handle_move(player, floor)     # Get the inputs for the movement
 
-        draw(win, background, bg_image, player)  # For each loop iteration, draw the visual aspect
+        draw(win, background, bg_image, player, floor)  # For each loop iteration, draw the visual aspect
 
     pygame.quit()   # Quit PyGame if we leave the loop
     quit()          # Quit Python too
