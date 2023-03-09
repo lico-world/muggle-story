@@ -3,6 +3,7 @@ import os
 import random
 import math
 import pygame
+from player import Player
 
 from os import listdir
 from os.path import isfile, join
@@ -43,9 +44,11 @@ def get_background(name):  # Return the background
     return tiles, image
 
 
-def draw(window, background, bg_image):  # Draw the background on the window
+def draw(window, background, bg_image, player):  # Draw the visual aspect on the window
     for tile in background:
-        window.blit(bg_image, tile)  # Draw each tile
+        window.blit(bg_image, tile)  # Draw each tile for the background
+
+    player.draw(window)
 
     pygame.display.update()  # Update the screen
 
@@ -53,6 +56,8 @@ def draw(window, background, bg_image):  # Draw the background on the window
 def main(window):
     clock = pygame.time.Clock()                             # Init the clock
     backgroung, bg_image = get_background("grey_tile.png")  # Init the background
+
+    player = Player(100, 100, 50, 50)
 
     run = True
     while run:
@@ -63,7 +68,7 @@ def main(window):
                 run = False
                 break
 
-        draw(window, backgroung, bg_image)  # For each loop iteration, draw the background
+        draw(window, backgroung, bg_image, player)  # For each loop iteration, draw the visual aspect
 
     pygame.quit()   # Quit PyGame if we leave the loop
     quit()          # Quit Python too
