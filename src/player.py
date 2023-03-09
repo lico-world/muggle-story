@@ -56,7 +56,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         # Adapt the rect to the sprite size
-        self.rect = self.sprite.get_rect(toplef=(self.rect.x, self.rect.y))
+        self.rect = self.sprite.get_rect(topleft=(self.rect.x, self.rect.y))
 
         # Mapping the "hit-box" to the sprite to have pixel perfect collision
         self.mask = pygame.mask.from_surface(self.sprite)
