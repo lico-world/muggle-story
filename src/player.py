@@ -1,5 +1,6 @@
 import pygame
 from constants import *
+from sprites_management import load_sprite_sheets
 
 
 class Player(pygame.sprite.Sprite):
@@ -13,6 +14,8 @@ class Player(pygame.sprite.Sprite):
         self.direction = "left"
         self.animation_count = 0
         self.fall_count = 0
+        self.SPRITES = load_sprite_sheets("character", "test_character", 64, 64, True)
+        self.sprite = None
 
     def move(self, dx, dy):
         self.rect.x += dx
@@ -33,10 +36,22 @@ class Player(pygame.sprite.Sprite):
     def loop(self, fps):
         # Amount of falling ticks divided by the amount of tick in one second
         # 1 is the minimum to avoid a very slow falling start
-        self.y_vel += min(1, (self.fall_count / FPS) * GRAVITY)
+        # self.y_vel += min(1, (self.fall_count / fps) * GRAVITY)
         self.move(self.x_vel, self.y_vel)   # Move
 
         self.fall_count += 1                # Increment the falling ticks each tick
+        self.update_sprite()
+
+    def update_sprite(self):
+        sprite_sheet = "idle"
+        if self.x_vel != 0:
+            sprite_sheet = "run"
+
+        sprite_sheet_name = sprite_sheet + "_" + self.direction
+        sprites = self.SPRITES[sprite_sheet_name]
+        sprite_index = (self.animation_count // ANIMATION_DELAY) % len(sprites)
+        self.sprite = sprites[sprite_index]
+        self.animation_count += 1
 
     def draw(self, window):
-        pygame.draw.rect(window, self.COLOR, self.rect)
+        window.blit(self.sprite, (self.rect.x, self.rect.y))

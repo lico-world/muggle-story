@@ -6,9 +6,7 @@ import pygame
 from player import Player
 from constants import *
 from keyboard_management import handle_move
-from sprites_management import get_background, draw
-
-from os import listdir
+from sprites_management import get_background, draw, flip
 
 
 def init():
