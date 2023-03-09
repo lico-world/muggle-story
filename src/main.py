@@ -44,6 +44,16 @@ def get_background(name):  # Return the background
     return tiles, image
 
 
+def handle_move(player):
+    keys = pygame.key.get_pressed()
+
+    player.x_vel = 0                    # Important to move only when holding a key
+    if keys[pygame.K_LEFT]:
+        player.move_left(PLAYER_VELOCITY)
+    if keys[pygame.K_RIGHT]:
+        player.move_right(PLAYER_VELOCITY)
+
+
 def draw(window, background, bg_image, player):  # Draw the visual aspect on the window
     for tile in background:
         window.blit(bg_image, tile)  # Draw each tile for the background
@@ -57,7 +67,7 @@ def main(window):
     clock = pygame.time.Clock()                             # Init the clock
     backgroung, bg_image = get_background("grey_tile.png")  # Init the background
 
-    player = Player(100, 100, 50, 50)
+    player = Player(128, 128, 16, 32)
 
     run = True
     while run:
@@ -67,6 +77,9 @@ def main(window):
             if event.type == pygame.QUIT:
                 run = False
                 break
+
+        player.loop(FPS)        # Move the player
+        handle_move(player)     # Get the inputs for the movement
 
         draw(window, backgroung, bg_image, player)  # For each loop iteration, draw the visual aspect
 
