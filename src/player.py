@@ -52,6 +52,14 @@ class Player(pygame.sprite.Sprite):
         sprite_index = (self.animation_count // ANIMATION_DELAY) % len(sprites)
         self.sprite = sprites[sprite_index]
         self.animation_count += 1
+        self.update()
+
+    def update(self):
+        # Adapt the rect to the sprite size
+        self.rect = self.sprite.get_rect(toplef=(self.rect.x, self.rect.y))
+
+        # Mapping the "hit-box" to the sprite to have pixel perfect collision
+        self.mask = pygame.mask.from_surface(self.sprite)
 
     def draw(self, window):
         window.blit(self.sprite, (self.rect.x, self.rect.y))
