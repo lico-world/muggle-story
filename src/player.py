@@ -17,6 +17,7 @@ class Player(pygame.sprite.Sprite):
         self.direction = "left"
         self.animation_count = 0
         self.fall_count = 0
+        self.jump_count = 0
         self.SPRITES = load_sprite_sheets(join(ASSETS, "character", "test_character"), 64, 64, True)
         self.sprite = None
 
@@ -36,16 +37,23 @@ class Player(pygame.sprite.Sprite):
             self.direction = "right"
             self.animation_count = 0
 
+    def jump(self):
+        self.y_vel = -GRAVITY * 8
+        self.animation_count = 0
+        self.jump_count += 1
+        if self.jump_count == 1:
+            self.fall_count = 0
+
     def landed(self):
         self.fall_count = 0
         self.y_vel = 0
+        self.jump_count = 0
 
     def hit_head(self):
         self.y_vel *= -1
 
     def loop(self, fps):
         # Amount of falling ticks divided by the amount of tick in one second
-        # 1 is the minimum to avoid a very slow falling start
         self.y_vel += min(1, (self.fall_count / fps) * GRAVITY)
         self.move(self.x_vel, self.y_vel)   # Move
 

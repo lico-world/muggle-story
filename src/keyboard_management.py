@@ -1,21 +1,6 @@
 import pygame
 from constants import *
-
-
-def handle_vertical_collision(player, objects, dy):
-    collided_objects = []
-    for obj in objects:
-        if pygame.sprite.collide_mask(player, obj):
-            if dy > 0:
-                player.rect.bottom = obj.rect.top
-                player.landed()
-            elif dy < 0:
-                player.rect.top = obj.rect.bottom
-                player.hit_head()
-
-            collided_objects.append(obj)
-
-    return collided_objects
+from collision_management import handle_vertical_collision
 
 
 def handle_move(player, objects):
@@ -26,5 +11,13 @@ def handle_move(player, objects):
         player.move_left(PLAYER_VELOCITY)
     if keys[pygame.K_RIGHT]:
         player.move_right(PLAYER_VELOCITY)
+    if keys[pygame.K_ESCAPE]:
+        pygame.quit()
+        quit()
 
     handle_vertical_collision(player, objects, player.y_vel)
+
+
+def handle_keydown_pressing(player, key):
+    if key == pygame.K_SPACE and player.jump_count < 2:
+        player.jump()

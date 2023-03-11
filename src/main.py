@@ -6,7 +6,7 @@ import pygame
 from player import Player
 from block import Block
 from constants import *
-from keyboard_management import handle_move
+from keyboard_management import handle_move, handle_keydown_pressing
 from sprites_management import get_background, draw, flip
 
 
@@ -39,6 +39,9 @@ def main(win):
             if event.type == pygame.QUIT:
                 run = False
                 break
+
+            if event.type == pygame.KEYDOWN:
+                handle_keydown_pressing(player, event.key)
 
         player.loop(FPS)        # Move the player
         handle_move(player, floor)     # Get the inputs for the movement
