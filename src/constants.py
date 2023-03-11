@@ -3,6 +3,7 @@ WIDTH, HEIGHT = 800, 550
 FPS = 60
 ANIMATION_DELAY = 5
 ASSETS = "..\\assets"
+SCROLL_AREA_WIDTH = WIDTH // 5
 
 # Game constants
 PLAYER_VELOCITY = 5

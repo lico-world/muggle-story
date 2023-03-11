@@ -26,14 +26,14 @@ def get_background(name):  # Return the background
     return tiles, image
 
 
-def draw(window, background, bg_image, player, objects):  # Draw the visual aspect on the window
+def draw(window, background, bg_image, player, objects, offset_x):  # Draw the visual aspect on the window
     for tile in background:
         window.blit(bg_image, tile)  # Draw each tile for the background
 
     for obj in objects:
-        obj.draw(window)
+        obj.draw(window, offset_x)
 
-    player.draw(window)
+    player.draw(window, offset_x)
 
     pygame.display.update()  # Update the screen
 

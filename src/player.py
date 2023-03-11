@@ -86,5 +86,5 @@ class Player(pygame.sprite.Sprite):
         # Mapping the "hit-box" to the sprite to have pixel perfect collision
         self.mask = pygame.mask.from_surface(self.sprite)
 
-    def draw(self, window):
-        window.blit(self.sprite, (self.rect.x, self.rect.y))
+    def draw(self, window, offset_x):
+        window.blit(self.sprite, (self.rect.x - offset_x, self.rect.y))

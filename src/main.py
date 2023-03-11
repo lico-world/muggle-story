@@ -17,14 +17,15 @@ def init():
 
     window = pygame.display.set_mode((WIDTH, HEIGHT))  # Create the window
 
-    main(window)    # Call the main function
+    main(window)  # Call the main function
 
 
 def main(win):
-    clock = pygame.time.Clock()                             # Init the clock
+    clock = pygame.time.Clock()  # Init the clock
     background, bg_image = get_background("grey_tile.png")  # Init the background
 
     block_size = 64
+    offset_x = 0  # Actual amount of side scrolling
 
     player = Player(128, 128, 16, 32)
 
@@ -35,7 +36,7 @@ def main(win):
     while run:
         clock.tick(FPS)  # Clock ticking to limit the FPS (so the game speed)
 
-        for event in pygame.event.get():    # Listen to all events
+        for event in pygame.event.get():  # Listen to all events
             if event.type == pygame.QUIT:
                 run = False
                 break
@@ -43,13 +44,17 @@ def main(win):
             if event.type == pygame.KEYDOWN:
                 handle_keydown_pressing(player, event.key)
 
-        player.loop(FPS)        # Move the player
-        handle_move(player, floor)     # Get the inputs for the movement
+        player.loop(FPS)  # Move the player
+        handle_move(player, floor)  # Get the inputs for the movement
 
-        draw(win, background, bg_image, player, floor)  # For each loop iteration, draw the visual aspect
+        draw(win, background, bg_image, player, floor, offset_x)  # For each loop iteration, draw the visual aspect
 
-    pygame.quit()   # Quit PyGame if we leave the loop
-    quit()          # Quit Python too
+        if (player.rect.right - offset_x >= WIDTH - SCROLL_AREA_WIDTH and player.x_vel > 0) or \
+                (player.rect.left - offset_x <= SCROLL_AREA_WIDTH and player.x_vel < 0):
+            offset_x += player.x_vel  # Side scrolling
+
+    pygame.quit()  # Quit PyGame if we leave the loop
+    quit()  # Quit Python too
 
 
 if __name__ == "__main__":  # Only launch the main function if this is the executed file
